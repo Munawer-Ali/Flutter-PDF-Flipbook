@@ -148,11 +148,14 @@ class PdfLoader {
       return;
     }
     pageNumber++;
+
     /// Calculate which page spread this page belongs to
     int targetPage = (pageNumber - 1) ~/ 2;
+
     /// Clear existing pages and load the target page
     appState.pageImages = [];
     appState.alreadyAdded = [];
+
     /// Load pages around the target page
     await loadPages(targetPage, pageNumber);
 

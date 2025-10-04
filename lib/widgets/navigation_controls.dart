@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/app_state.dart';
 import '../services/page_navigation.dart';
 import '../services/pdf_loader.dart';
-import 'pdf_book_viewer.dart'; /// Import for NavigationControlsStyle
+import 'pdf_book_viewer.dart';
+
+/// Import for NavigationControlsStyle
 
 class NavigationControls extends StatelessWidget {
   final AppState appState;
@@ -40,8 +42,9 @@ class NavigationControls extends StatelessWidget {
         ],
       ),
       child: Row(
-        crossAxisAlignment:
-            CrossAxisAlignment.stretch, /// Make children fill vertically
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+
+        /// Make children fill vertically
         children: [
           /// Previous button
           Container(

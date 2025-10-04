@@ -117,7 +117,9 @@ class _PdfBookViewerState extends State<PdfBookViewer>
 
   Future<void> _loadPdfWithErrorHandling() async {
     try {
-      appState.errorMessage = null; /// Clear any previous error
+      appState.errorMessage = null;
+
+      /// Clear any previous error
       await pdfLoader.loadPdf(widget.pdfUrl);
     } catch (e) {
       final errorMsg = 'Failed to load PDF: ${e.toString()}';
@@ -155,6 +157,7 @@ class _PdfBookViewerState extends State<PdfBookViewer>
           totalPages != appState.currentTotalPages) {
         currentPage = appState.currentPageComplete * 2 + 1;
         totalPages = appState.currentTotalPages;
+
         /// Defer the callback to the next frame to avoid setState during build
         WidgetsBinding.instance.addPostFrameCallback((_) {
           widget.onPageChanged!(currentPage!, totalPages!);

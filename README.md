@@ -33,7 +33,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_pdf_flipbook: ^0.0.1
+  flutter_pdf_flipbook: ^<latest_version> # Check pub.dev for the latest version
 ```
 
 Then run:
