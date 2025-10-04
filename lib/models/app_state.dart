@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:pdfx/pdfx.dart';
 
 class AppState extends ChangeNotifier {
-  // PDF related state
+  /// PDF related state
   PdfDocument? _document;
   List<PdfPageImage> _pageImages = [];
   List<int> _alreadyAdded = [];
@@ -10,26 +10,26 @@ class AppState extends ChangeNotifier {
   bool _showLastPage = true;
   String? _errorMessage;
 
-  // Navigation state
+  /// Navigation state
   int _currentPage = 0;
   int _currentPageComplete = 0;
   int _totalPages = 0;
 
-  // Animation state
+  /// Animation state
   bool _animationEnd = true;
   bool _animationComplete = false;
   bool _isAnimationReady = true;
   bool _isSwipeInProgress = false;
   bool _isSwipingLeft = true;
 
-  // Zoom state
+  /// Zoom state
   bool _isZoomed = false;
-  
-  // Mobile zoom state
+
+  /// Mobile zoom state
   bool _isMobileZoomed = false;
   bool _isMobileZoomAnimation = false;
 
-  // Getters
+  /// Getters
   PdfDocument? get document => _document;
   List<PdfPageImage> get pageImages => _pageImages;
   List<int> get alreadyAdded => _alreadyAdded;
@@ -47,23 +47,24 @@ class AppState extends ChangeNotifier {
   bool get isZoomed => _isZoomed;
   bool get isMobileZoomed => _isMobileZoomed;
   bool get isMobileZoomAnimation => _isMobileZoomAnimation;
-  
-  // Platform detection
-  bool get isMobile => !kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS);
-  
-  // Computed boolean for left page visibility
+
+  /// Platform detection
+  bool get isMobile =>
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS);
+
+  /// Computed boolean for left page visibility
   bool get shouldShowLeftPage {
     if (currentTotalPages == 2) {
       return true;
     }
-    
-    // Original logic for other cases
-    return !(!_isSwipingLeft 
-        ? _currentPage == 0 
-        : _currentPageComplete == 0);
+
+    /// Original logic for other cases
+    return !(!_isSwipingLeft ? _currentPage == 0 : _currentPageComplete == 0);
   }
 
-  // Setters with notifyListeners
+  /// Setters with notifyListeners
   set document(PdfDocument? value) {
     _document = value;
     notifyListeners();
@@ -149,14 +150,14 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Mobile zoom control methods
+  /// Mobile zoom control methods
   void toggleMobileZoom() {
     if (!isMobile) return;
-    
+
     isMobileZoomAnimation = true;
     isMobileZoomed = !isMobileZoomed;
-    
-    // Reset animation after a delay
+
+    /// Reset animation after a delay
     Future.delayed(Duration(milliseconds: 300), () {
       isMobileZoomAnimation = false;
     });
@@ -168,7 +169,7 @@ class AppState extends ChangeNotifier {
     isMobileZoomAnimation = false;
   }
 
-  // Batch update method for multiple state changes
+  /// Batch update method for multiple state changes
   void updateMultiple({
     bool? animationEnd,
     bool? animationComplete,
@@ -179,7 +180,7 @@ class AppState extends ChangeNotifier {
     int? currentPageComplete,
   }) {
     bool shouldNotify = false;
-    
+
     if (animationEnd != null && _animationEnd != animationEnd) {
       _animationEnd = animationEnd;
       shouldNotify = true;
@@ -204,7 +205,8 @@ class AppState extends ChangeNotifier {
       _currentPage = currentPage;
       shouldNotify = true;
     }
-    if (currentPageComplete != null && _currentPageComplete != currentPageComplete) {
+    if (currentPageComplete != null &&
+        _currentPageComplete != currentPageComplete) {
       _currentPageComplete = currentPageComplete;
       shouldNotify = true;
     }
@@ -214,7 +216,7 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  // Clear all state
+  /// Clear all state
   void clear() {
     _document = null;
     _pageImages.clear();
@@ -234,5 +236,4 @@ class AppState extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
   }
-
 }

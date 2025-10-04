@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/app_state.dart';
 import '../services/pdf_loader.dart';
 import '../services/book_animation_controller.dart';
@@ -9,7 +8,7 @@ import 'animated_page.dart';
 import 'navigation_controls.dart';
 
 /// A beautiful book flip animation widget for displaying PDFs
-/// 
+///
 /// Usage:
 /// ```dart
 /// PdfBookViewer(
@@ -19,19 +18,19 @@ import 'navigation_controls.dart';
 class PdfBookViewer extends StatefulWidget {
   /// The URL of the PDF to display
   final String pdfUrl;
-  
+
   /// Optional styling for the book viewer
   final PdfBookViewerStyle? style;
-  
+
   /// Callback when page changes
   final void Function(int currentPage, int totalPages)? onPageChanged;
-  
+
   /// Callback when an error occurs
   final void Function(String error)? onError;
-  
+
   /// Whether to show navigation controls
   final bool showNavigationControls;
-  
+
   /// Custom background color
   final Color? backgroundColor;
 
@@ -61,15 +60,15 @@ class _PdfBookViewerState extends State<PdfBookViewer>
   @override
   void initState() {
     super.initState();
-    
-    // Initialize state management
+
+    /// Initialize state management
     appState = AppState();
     appState.addListener(_onPageChanged);
-    
+
     transformationController = TransformationController();
     transformationController.addListener(_onTransformationChanged);
-    
-    // Initialize services
+
+    /// Initialize services
     pdfLoader = PdfLoader(appState);
     animationController = BookAnimationController(
       appState: appState,
@@ -80,16 +79,16 @@ class _PdfBookViewerState extends State<PdfBookViewer>
       appState: appState,
       animationController: animationController,
     );
-    
-    // Load the PDF
+
+    /// Load the PDF
     _loadPdfWithErrorHandling();
   }
- 
+
   @override
   void didUpdateWidget(PdfBookViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.pdfUrl != widget.pdfUrl) {
-      // Defer state updates to avoid setState during build
+      /// Defer state updates to avoid setState during build
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         try {
           _resetState();
@@ -118,7 +117,7 @@ class _PdfBookViewerState extends State<PdfBookViewer>
 
   Future<void> _loadPdfWithErrorHandling() async {
     try {
-      appState.errorMessage = null; // Clear any previous error
+      appState.errorMessage = null; /// Clear any previous error
       await pdfLoader.loadPdf(widget.pdfUrl);
     } catch (e) {
       final errorMsg = 'Failed to load PDF: ${e.toString()}';
@@ -128,6 +127,7 @@ class _PdfBookViewerState extends State<PdfBookViewer>
       }
     }
   }
+
   @override
   void dispose() {
     animationController.dispose();
@@ -141,21 +141,23 @@ class _PdfBookViewerState extends State<PdfBookViewer>
     final Matrix4 matrix = transformationController.value;
     final double scaleX = matrix.getMaxScaleOnAxis();
     bool newZoomed = scaleX > 1.01;
-    
+
     if (appState.isZoomed != newZoomed) {
       appState.isZoomed = newZoomed;
     }
   }
-  var currentPage;
-  var totalPages;
+
+  int? currentPage;
+  int? totalPages;
   void _onPageChanged() {
     if (widget.onPageChanged != null) {
-      if(currentPage != appState.currentPageComplete * 2 + 1 || totalPages != appState.currentTotalPages) {
+      if (currentPage != appState.currentPageComplete * 2 + 1 ||
+          totalPages != appState.currentTotalPages) {
         currentPage = appState.currentPageComplete * 2 + 1;
         totalPages = appState.currentTotalPages;
-        // Defer the callback to the next frame to avoid setState during build
+        /// Defer the callback to the next frame to avoid setState during build
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          widget.onPageChanged!(currentPage, totalPages);
+          widget.onPageChanged!(currentPage!, totalPages!);
         });
       }
     }
@@ -164,9 +166,11 @@ class _PdfBookViewerState extends State<PdfBookViewer>
   @override
   Widget build(BuildContext context) {
     final style = widget.style ?? PdfBookViewerStyle.defaultStyle();
-    
+
     return Scaffold(
-      backgroundColor: widget.backgroundColor ?? style.backgroundColor ?? Colors.grey.shade800,
+      backgroundColor: widget.backgroundColor ??
+          style.backgroundColor ??
+          Colors.grey.shade800,
       body: Stack(
         children: [
           Column(
@@ -174,7 +178,7 @@ class _PdfBookViewerState extends State<PdfBookViewer>
               ListenableBuilder(
                 listenable: appState,
                 builder: (context, child) {
-                  // Show error message if there's an error
+                  /// Show error message if there's an error
                   if (appState.errorMessage != null) {
                     return Expanded(
                       child: Center(
@@ -201,51 +205,58 @@ class _PdfBookViewerState extends State<PdfBookViewer>
                       ),
                     );
                   }
-                  
-                  // Show loading indicator if no error and no pages loaded
-                  return appState.pageImages.isEmpty 
+
+                  /// Show loading indicator if no error and no pages loaded
+                  return appState.pageImages.isEmpty
                       ? Expanded(
                           child: Center(
                             child: CircularProgressIndicator(
                               color: style.loadingIndicatorColor,
                             ),
                           ),
-                        ) 
+                        )
                       : Expanded(
                           child: LayoutBuilder(
                             builder: (context, constraints) {
                               final screenWidth = constraints.maxWidth;
                               final screenHeight = constraints.maxHeight;
-                              
-                              // Calculate proper aspect ratio for PDF pages
-                              final pageAspectRatio = appState.pageImages.first.width!.toDouble() / 
+
+                              /// Calculate proper aspect ratio for PDF pages
+                              final pageAspectRatio = appState
+                                      .pageImages.first.width!
+                                      .toDouble() /
                                   appState.pageImages.first.height!.toDouble();
-                              
-                              // Calculate maximum height available (leave some padding)
-                              final maxHeight = screenHeight - (widget.showNavigationControls ? 100 : 50);
-                              
-                              // Calculate width for single page based on aspect ratio
-                              final singlePageWidth = maxHeight * pageAspectRatio;
-                              
-                              // Calculate total width for both pages (book spread)
+
+                              /// Calculate maximum height available (leave some padding)
+                              final maxHeight = screenHeight -
+                                  (widget.showNavigationControls ? 100 : 50);
+
+                              /// Calculate width for single page based on aspect ratio
+                              final singlePageWidth =
+                                  maxHeight * pageAspectRatio;
+
+                              /// Calculate total width for both pages (book spread)
                               final totalBookWidth = singlePageWidth * 2;
-                              
-                              // Scale down if book is too wide for screen
+
+                              /// Scale down if book is too wide for screen
                               double scaleFactor = 1.0;
                               if (totalBookWidth > screenWidth * 0.9) {
-                                scaleFactor = (screenWidth * 0.9) / totalBookWidth;
+                                scaleFactor =
+                                    (screenWidth * 0.9) / totalBookWidth;
                               }
-                              
-                              // Apply scale factor
-                              final finalPageWidth = singlePageWidth * scaleFactor;
+
+                              /// Apply scale factor
+                              final finalPageWidth =
+                                  singlePageWidth * scaleFactor;
                               final finalPageHeight = maxHeight * scaleFactor;
-                              
+
                               return MouseRegion(
-                                cursor: appState.isZoomed 
-                                    ? SystemMouseCursors.grab 
+                                cursor: appState.isZoomed
+                                    ? SystemMouseCursors.grab
                                     : SystemMouseCursors.basic,
                                 child: InteractiveViewer(
-                                  transformationController: transformationController,
+                                  transformationController:
+                                      transformationController,
                                   boundaryMargin: EdgeInsets.zero,
                                   minScale: 1.0,
                                   child: Center(
@@ -257,38 +268,52 @@ class _PdfBookViewerState extends State<PdfBookViewer>
                                         children: [
                                           appState.pageImages.isEmpty
                                               ? Center(
-                                                  child: CircularProgressIndicator(
-                                                    color: style.loadingIndicatorColor,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: style
+                                                        .loadingIndicatorColor,
                                                   ),
                                                 )
                                               : GestureDetector(
-                                                  onHorizontalDragUpdate: appState.isZoomed 
-                                                      ? null 
-                                                      : pageNavigation.handleHorizontalDrag,
+                                                  onHorizontalDragUpdate: appState
+                                                          .isZoomed
+                                                      ? null
+                                                      : pageNavigation
+                                                          .handleHorizontalDrag,
                                                   child: Stack(
                                                     children: [
-                                                      // Center divider
+                                                      /// Center divider
                                                       Center(
                                                         child: Container(
-                                                          width: style.centerDividerWidth,
-                                                          color: style.centerDividerColor,
+                                                          width: style
+                                                              .centerDividerWidth,
+                                                          color: style
+                                                              .centerDividerColor,
                                                         ),
                                                       ),
-                                                      
-                                                      // Book pages
+
+                                                      /// Book pages
                                                       BookPage(
                                                         appState: appState,
-                                                        finalPageWidth: finalPageWidth,
-                                                        finalPageHeight: finalPageHeight,
+                                                        finalPageWidth:
+                                                            finalPageWidth,
+                                                        finalPageHeight:
+                                                            finalPageHeight,
                                                       ),
-                                                      
-                                                      // Animated page during flip
-                                                      if (animationController.animationController.isAnimating)
+
+                                                      /// Animated page during flip
+                                                      if (animationController
+                                                          .animationController
+                                                          .isAnimating)
                                                         AnimatedPage(
                                                           appState: appState,
-                                                          rotationAnimation: animationController.rotationAnimation,
-                                                          finalPageWidth: finalPageWidth,
-                                                          finalPageHeight: finalPageHeight,
+                                                          rotationAnimation:
+                                                              animationController
+                                                                  .rotationAnimation,
+                                                          finalPageWidth:
+                                                              finalPageWidth,
+                                                          finalPageHeight:
+                                                              finalPageHeight,
                                                         ),
                                                     ],
                                                   ),
@@ -351,7 +376,7 @@ class PdfBookViewerStyle {
   static PdfBookViewerStyle defaultStyle() {
     return PdfBookViewerStyle(
       backgroundColor: Colors.grey.shade800,
-      centerDividerColor: Colors.black.withOpacity(0.5),
+      centerDividerColor: Colors.black.withValues(alpha: 0.5),
       loadingIndicatorColor: Colors.blue,
     );
   }

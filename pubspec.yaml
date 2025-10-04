@@ -1,6 +1,6 @@
 name: flutter_pdf_flipbook
-description: A beautiful book flip animation widget for displaying PDFs with realistic page turning effects. Supports mobile phones, tablets, desktop, and web browsers with cross-platform compatibility.
-version: 0.0.1
+description: Display PDFs as beautiful flipbooks with smooth page-turn animations on mobile, web, and desktop.
+version: 0.0.2
 homepage: https://github.com/Munawer-Ali/Flutter-PDF-Flipbook
 
 environment:

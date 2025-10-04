@@ -32,11 +32,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String _currentPage = "1";
   String _totalPages = "0";
-  
-  // Example PDF URLs - users can change these
-  final String defaultPdfUrl = 'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
-  String currentPdfUrl = 'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
-  
+
+  /// Example PDF URLs - users can change these
+  final String defaultPdfUrl =
+      'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
+  String currentPdfUrl =
+      'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          // PDF URL input section
+          /// PDF URL input section
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -72,21 +73,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text(
                   'Current Page: $_currentPage of $_totalPages',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple,
+                      ),
                 ),
                 const SizedBox(height: 16),
-            ],
+              ],
             ),
           ),
-          
-          // The PDF Book Viewer
+
+          /// The PDF Book Viewer
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.deepPurple.withValues(alpha: 0.3)),
+                border:
+                    Border.all(color: Colors.deepPurple.withValues(alpha: 0.3)),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: ClipRRect(
@@ -123,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  
+
   void _showStyleOptions() {
     showDialog(
       context: context,
@@ -162,9 +164,12 @@ extension PdfBookViewerStyleExtension on PdfBookViewerStyle {
       bookBackgroundColor: bookBackgroundColor ?? this.bookBackgroundColor,
       centerDividerColor: centerDividerColor ?? this.centerDividerColor,
       centerDividerWidth: centerDividerWidth ?? this.centerDividerWidth,
-      loadingIndicatorColor: loadingIndicatorColor ?? this.loadingIndicatorColor,
-      bookContainerDecoration: bookContainerDecoration ?? this.bookContainerDecoration,
-      navigationControlsStyle: navigationControlsStyle ?? this.navigationControlsStyle,
+      loadingIndicatorColor:
+          loadingIndicatorColor ?? this.loadingIndicatorColor,
+      bookContainerDecoration:
+          bookContainerDecoration ?? this.bookContainerDecoration,
+      navigationControlsStyle:
+          navigationControlsStyle ?? this.navigationControlsStyle,
     );
   }
 }

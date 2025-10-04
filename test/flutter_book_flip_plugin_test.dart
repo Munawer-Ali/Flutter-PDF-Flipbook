@@ -17,7 +17,7 @@ void main() {
     });
 
     test('NavigationControlsStyle default values', () {
-      // Note: NavigationControlsStyle is imported from the main package
+      /// Note: NavigationControlsStyle is imported from the main package
       expect(() => NavigationControlsStyle(), returnsNormally);
     });
   });

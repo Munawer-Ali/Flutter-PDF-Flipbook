@@ -18,27 +18,26 @@ class AnimatedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: appState.isSwipingLeft
-          ? Alignment.centerRight
-          : Alignment.centerLeft,
+      alignment:
+          appState.isSwipingLeft ? Alignment.centerRight : Alignment.centerLeft,
       child: AnimatedBuilder(
         animation: rotationAnimation,
         builder: (context, child) {
           double rotationValue = rotationAnimation.value;
           bool isFront = rotationValue <= 0.5;
-          
-          // Calculate indices safely
+
+          /// Calculate indices safely
           final frontPageIndex = !appState.isSwipingLeft
               ? appState.currentPageComplete * 2
               : appState.currentPageComplete * 2 + 1;
           final backPageIndex = appState.isSwipingLeft
               ? appState.currentPageComplete * 2 + 2
               : appState.currentPage * 2 + 1;
-          
-          // Check if pages exist
+
+          /// Check if pages exist
           final hasFrontPage = frontPageIndex < appState.pageImages.length;
           final hasBackPage = backPageIndex < appState.pageImages.length;
-          
+
           return Transform(
             alignment: appState.isSwipingLeft
                 ? Alignment.centerLeft
@@ -57,7 +56,8 @@ class AnimatedPage extends StatelessWidget {
                   child: Transform(
                     alignment: Alignment.center,
                     transform: Matrix4.identity()..rotateY(isFront ? 0 : 3.14),
-                    child: (isFront && hasFrontPage) || (!isFront && hasBackPage)
+                    child: (isFront && hasFrontPage) ||
+                            (!isFront && hasBackPage)
                         ? Image.memory(
                             isFront
                                 ? appState.pageImages[frontPageIndex].bytes
@@ -77,15 +77,17 @@ class AnimatedPage extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: appState.isSwipingLeft && isFront || !appState.isSwipingLeft && isFront 
-                      ? null 
+                  left: appState.isSwipingLeft && isFront ||
+                          !appState.isSwipingLeft && isFront
+                      ? null
                       : -20,
                   right: !appState.isSwipingLeft && isFront ? -20 : null,
                   child: Container(
-                    width: !appState.isSwipingLeft && isFront 
-                        ? 40 
-                        : appState.isSwipingLeft && isFront || !appState.isSwipingLeft && !isFront 
-                            ? 0 
+                    width: !appState.isSwipingLeft && isFront
+                        ? 40
+                        : appState.isSwipingLeft && isFront ||
+                                !appState.isSwipingLeft && !isFront
+                            ? 0
                             : 40,
                     height: finalPageHeight,
                     decoration: BoxDecoration(

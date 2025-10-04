@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/app_state.dart';
 import '../services/page_navigation.dart';
 import '../services/pdf_loader.dart';
-import 'pdf_book_viewer.dart'; // Import for NavigationControlsStyle
+import 'pdf_book_viewer.dart'; /// Import for NavigationControlsStyle
 
 class NavigationControls extends StatelessWidget {
   final AppState appState;
@@ -23,25 +23,27 @@ class NavigationControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controlStyle = style ?? NavigationControlsStyle();
-    
+
     return Container(
       width: 320,
       height: 40,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          controlStyle.shadow ?? BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 2),
-          ),
+          controlStyle.shadow ??
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(0, 2),
+              ),
         ],
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch, // Make children fill vertically
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch, /// Make children fill vertically
         children: [
-          // Previous button
+          /// Previous button
           Container(
             decoration: BoxDecoration(
               color: controlStyle.buttonColor,
@@ -52,7 +54,7 @@ class NavigationControls extends StatelessWidget {
             ),
           ),
 
-          // TextField for page number
+          /// TextField for page number
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -77,7 +79,7 @@ class NavigationControls extends StatelessWidget {
             ),
           ),
 
-          // Button to navigate to page
+          /// Button to navigate to page
           Container(
             decoration: BoxDecoration(
               color: controlStyle.buttonColor,
@@ -87,21 +89,24 @@ class NavigationControls extends StatelessWidget {
               onPressed: () {
                 if (pageController.text.isNotEmpty) {
                   int pageNumber = int.parse(pageController.text);
-                  if((pageNumber / 2).toInt() == appState.currentPage) {
-                       ScaffoldMessenger.of(context).showSnackBar(
+                  if ((pageNumber / 2).toInt() == appState.currentPage) {
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Page number must be between 1 and ${appState.document!.pagesCount}'),
+                        content: Text(
+                            'Page number must be between 1 and ${appState.document!.pagesCount}'),
                         backgroundColor: Colors.red,
                       ),
                     );
                     return;
                   }
-                  if (pageNumber > 0 && pageNumber <= appState.document!.pagesCount) {
+                  if (pageNumber > 0 &&
+                      pageNumber <= appState.document!.pagesCount) {
                     pdfLoader.navigateToPage(pageNumber);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Page number must be between 1 and ${appState.document!.pagesCount}'),
+                        content: Text(
+                            'Page number must be between 1 and ${appState.document!.pagesCount}'),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -111,7 +116,7 @@ class NavigationControls extends StatelessWidget {
             ),
           ),
 
-          // Next button
+          /// Next button
           Container(
             decoration: BoxDecoration(
               color: controlStyle.buttonColor,
@@ -126,4 +131,3 @@ class NavigationControls extends StatelessWidget {
     );
   }
 }
-

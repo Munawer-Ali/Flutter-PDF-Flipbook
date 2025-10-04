@@ -15,30 +15,31 @@ class BookPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate indices safely
-    final leftPageIndex = appState.isSwipingLeft 
-        ? appState.currentPageComplete * 2 
+    /// Calculate indices safely
+    final leftPageIndex = appState.isSwipingLeft
+        ? appState.currentPageComplete * 2
         : appState.currentPage * 2;
-    final rightPageIndex = appState.isSwipingLeft 
-        ? appState.currentPage * 2 + 1 
+    final rightPageIndex = appState.isSwipingLeft
+        ? appState.currentPage * 2 + 1
         : appState.currentPageComplete * 2 + 1;
-    
-    // Check if pages exist
+
+    /// Check if pages exist
     final hasLeftPage = leftPageIndex < appState.pageImages.length;
     final hasRightPage = rightPageIndex < appState.pageImages.length;
-    
+
     return Stack(
       children: [
-        // Left page
+        /// Left page
         Visibility(
-          visible: hasLeftPage && !(!appState.isSwipingLeft 
-              ? appState.currentPage == 0 
-              : appState.currentPageComplete == 0),
+          visible: hasLeftPage &&
+              !(!appState.isSwipingLeft
+                  ? appState.currentPage == 0
+                  : appState.currentPageComplete == 0),
           child: Container(
             height: finalPageHeight,
             width: finalPageWidth,
-              color: Colors.white,
-            child: hasLeftPage 
+            color: Colors.white,
+            child: hasLeftPage
                 ? Image.memory(
                     appState.pageImages[leftPageIndex].bytes,
                     fit: BoxFit.fill,
@@ -56,7 +57,7 @@ class BookPage extends StatelessWidget {
           ),
         ),
 
-        // Center shadow
+        /// Center shadow
         Center(
           child: Container(
             width: 40,
@@ -74,7 +75,7 @@ class BookPage extends StatelessWidget {
           ),
         ),
 
-        // Right page
+        /// Right page
         Positioned(
           right: 0,
           top: 0,
@@ -85,7 +86,7 @@ class BookPage extends StatelessWidget {
               height: finalPageHeight,
               width: finalPageWidth,
               color: Colors.white,
-              child: hasRightPage 
+              child: hasRightPage
                   ? Image.memory(
                       appState.pageImages[rightPageIndex].bytes,
                       fit: BoxFit.fill,
