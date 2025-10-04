@@ -2,6 +2,20 @@
 
 A beautiful Flutter plugin that provides realistic book flip animations for displaying PDFs. Perfect for e-book readers, digital magazines, and any app that needs to display PDFs with engaging page-turning animations.
 
+---
+
+## 🌐 Live Demo
+
+🎯 **Try it here:** https://flutter-pdf-flipbook.pages.dev/
+
+---
+
+## 🎞️ Preview
+
+![demo](https://github.com/user-attachments/assets/11429996-1f34-4419-8e74-38ca3196480f)
+
+---
+
 ## Features
 
 - 📖 **Realistic Book Flip Animation** - Smooth page turning with natural book-like physics
