@@ -1,6 +1,6 @@
 name: flutter_pdf_flipbook
 description: Display PDFs as beautiful flipbooks with smooth page-turn animations on mobile, web, and desktop.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/Munawer-Ali/Flutter-PDF-Flipbook
 repository: https://github.com/Munawer-Ali/Flutter-PDF-Flipbook
 issue_tracker: https://github.com/Munawer-Ali/Flutter-PDF-Flipbook/issues
