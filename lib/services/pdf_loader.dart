@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdfx/pdfx.dart';
 import '../models/app_state.dart';
@@ -37,6 +38,46 @@ class PdfLoader {
       } else {
         throw Exception('Direct fetch failed and no proxy URL provided. Error: $e');
       }
+    }
+  }
+
+  Future<void> loadPdfAsset(String assetPath) async {
+    try {
+      appState.isLoading = true;
+
+      /// Load PDF bytes from assets
+      final byteData = await rootBundle.load(assetPath);
+      final Uint8List bytes = byteData.buffer.asUint8List();
+
+      if (bytes.isEmpty) {
+        throw Exception("PDF asset is empty or could not be loaded.");
+      }
+
+      /// Validate PDF format by checking magic bytes: %PDF
+      if (bytes.length < 4 ||
+          !(bytes[0] == 0x25 &&
+              bytes[1] == 0x50 &&
+              bytes[2] == 0x44 &&
+              bytes[3] == 0x46)) {
+        throw Exception("Invalid PDF format. Asset does not appear to be a valid PDF.");
+      }
+
+      /// Open PDF document
+      final document = await PdfDocument.openData(bytes);
+      if (document.pagesCount == 0) {
+        throw Exception("PDF document has no pages.");
+      }
+
+      /// Save in app state
+      appState.document = document;
+      appState.totalPages = document.pagesCount;
+      appState.isLoading = false;
+
+      /// Load initial pages
+      await loadPages(0, null);
+    } catch (e) {
+      appState.isLoading = false;
+      throw Exception("Failed to load PDF from assets: $e");
     }
   }
 

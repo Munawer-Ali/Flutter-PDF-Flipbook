@@ -68,7 +68,7 @@ class NavigationControls extends StatelessWidget {
                   child: TextField(
                     controller: pageController,
                     decoration: InputDecoration(
-                      hintText: "Page #",
+                      hintText: Localizations.localeOf(context).languageCode.toLowerCase() == "el" ? "Σελίδα" : "Page #",
                       border: InputBorder.none,
                       hintStyle: TextStyle(color: Colors.grey),
                       contentPadding: EdgeInsets.only(bottom: 8),

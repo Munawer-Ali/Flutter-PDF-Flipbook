@@ -19,6 +19,8 @@ class PdfBookViewer extends StatefulWidget {
   /// The URL of the PDF to display
   final String pdfUrl;
 
+  final bool fromAssets;
+
   /// Optional styling for the book viewer
   final PdfBookViewerStyle? style;
 
@@ -41,6 +43,7 @@ class PdfBookViewer extends StatefulWidget {
   const PdfBookViewer({
     Key? key,
     required this.pdfUrl,
+    this.fromAssets = false,
     this.style,
     this.onPageChanged,
     this.onError,
@@ -97,7 +100,11 @@ class _PdfBookViewerState extends State<PdfBookViewer>
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         try {
           _resetState();
-          await pdfLoader.loadPdf(widget.pdfUrl);
+          if (widget.fromAssets) {
+            await pdfLoader.loadPdfAsset(widget.pdfUrl);
+          } else {
+            await pdfLoader.loadPdf(widget.pdfUrl);
+          }
         } catch (e) {
           final errorMsg = 'Failed to load PDF: ${e.toString()}';
           appState.errorMessage = errorMsg;
@@ -125,7 +132,14 @@ class _PdfBookViewerState extends State<PdfBookViewer>
       appState.errorMessage = null;
 
       /// Clear any previous error
-      await pdfLoader.loadPdf(widget.pdfUrl);
+
+      if (widget.fromAssets) {
+        await pdfLoader.loadPdfAsset(widget.pdfUrl);
+      } else {
+        await pdfLoader.loadPdf(widget.pdfUrl);
+      }
+
+
     } catch (e) {
       final errorMsg = 'Failed to load PDF: ${e.toString()}';
       appState.errorMessage = errorMsg;

@@ -65,6 +65,19 @@ That's it! The plugin will load your PDF and display it with beautiful book flip
 
 ## Advanced Usage
 
+
+### Asset bundle loading
+If your PDF file is in your `assets` folder, pass `fromAssets: true` to the constructor.
+
+Example:
+
+```dart
+PdfBookViewer(
+  pdfUrl: 'assets/document.pdf',
+  fromAssets: true,
+),
+```
+
 ### Custom Styling
 
 ```dart
